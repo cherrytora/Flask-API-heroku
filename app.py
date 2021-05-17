@@ -31,7 +31,7 @@ def prepare_image(image, target):
 	# return the processed image
 	return image
 
-@app.route("/predict", methods=["POST"])
+@app.route("", methods=["POST"])
 def predict():
 	# initialize the data dictionary that will be returned from the
 	# view
