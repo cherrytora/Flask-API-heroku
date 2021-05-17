@@ -1,4 +1,4 @@
-tensorflow-cpu
+tensorflow-cpu --use-feature=2020-resolver
 pillow
 Flask==1.1.1
 gunicorn
