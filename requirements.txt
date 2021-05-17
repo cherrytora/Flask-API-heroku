@@ -1,5 +1,5 @@
 python==3.8
-tensorflow
+tensorflow-cpu
 pillow
 numpy==1.19.2
 Flask==1.1.1
