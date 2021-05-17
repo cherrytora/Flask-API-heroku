@@ -8,28 +8,30 @@ import io
 
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
-model = None
+#model = None
 
-def load_model():
-	# load the pre-trained Keras model (here we are using a model
-	# pre-trained on ImageNet and provided by Keras, but you can
-	# substitute in your own networks just as easily)
-	global model
-	model = ResNet50(weights="imagenet")
+# def load_model():
+# 	# load the pre-trained Keras model (here we are using a model
+# 	# pre-trained on ImageNet and provided by Keras, but you can
+# 	# substitute in your own networks just as easily)
+# 	global model
+# 	model = ResNet50(weights="imagenet")
 
-def prepare_image(image, target):
-	# if the image mode is not RGB, convert it
-	if image.mode != "RGB":
-		image = image.convert("RGB")
+model = ResNet50(weights="imagenet")
 
-	# resize the input image and preprocess it
-	image = image.resize(target)
-	image = img_to_array(image)
-	image = np.expand_dims(image, axis=0)
-	image = imagenet_utils.preprocess_input(image)
+# def prepare_image(image, target):
+# 	# if the image mode is not RGB, convert it
+# 	if image.mode != "RGB":
+# 		image = image.convert("RGB")
 
-	# return the processed image
-	return image
+# 	# resize the input image and preprocess it
+# 	image = image.resize(target)
+# 	image = img_to_array(image)
+# 	image = np.expand_dims(image, axis=0)
+# 	image = imagenet_utils.preprocess_input(image)
+
+# 	# return the processed image
+# 	return image
 
 # @app.route('/', methods=["POST"])
 @app.route("/predict", methods=["POST"])
@@ -44,9 +46,15 @@ def predict():
 			# read the image in PIL format
 			image = flask.request.files["image"].read()
 			image = Image.open(io.BytesIO(image))
+			if image.mode != "RGB":
+				image = image.convert("RGB")
 
 			# preprocess the image and prepare it for classification
-			image = prepare_image(image, target=(224, 224))
+			#image = prepare_image(image, target=(224, 224))
+			image = image.resize((224, 224))
+			image = img_to_array(image)
+			image = np.expand_dims(image, axis=0)
+			image = imagenet_utils.preprocess_input(image)
 
 			# classify the input image and then initialize the list
 			# of predictions to return to the client
